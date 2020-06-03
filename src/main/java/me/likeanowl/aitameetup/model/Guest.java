@@ -3,10 +3,10 @@ package me.likeanowl.aitameetup.model;
 import lombok.Value;
 
 @Value
-public class Passenger {
+public class Guest {
     long id;
     String firstName;
     String lastName;
-    long flightDistance;
-    long flightHours;
+    int flightDistance;
+    int flightHours;
 }

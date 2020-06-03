@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="me.likeanowl.aitameetup.repository.GuestMapper">
+
+    <resultMap id="guest" type="me.likeanowl.aitameetup.model.Guest">
+        <constructor>
+            <idArg column="id" javaType="long"/>
+            <arg column="first_name" javaType="String"/>
+            <arg column="last_name" javaType="String"/>
+            <arg column="flight_distance" javaType="int"/>
+            <arg column="flight_hours" javaType="int"/>
+        </constructor>
+    </resultMap>
+
+    <insert id="insertGuest">
+        INSERT INTO guest (id, first_name, last_name, flight_distance, flight_hours)
+        VALUES (#{guest.id}, #{guest.firstName}, #{guest.lastName}, #{guest.flightDistance},
+                #{guest.flightHours})
+        ON CONFLICT DO UPDATE SET (first_name = EXCLUDED.first_name,
+            last_name = EXCLUDED.last_name,
+            flight_distance = EXCLUDED.flight_distance,
+            flight_hours = EXCLUDED.flight_hours);
+    </insert>
+
+    <select id="findGuest" resultType="me.likeanowl.aitameetup.model.Guest">
+        SELECT id, first_name, last_name, flight_distance, flight_hours FROM guest WHERE id = #{id}
+    </select>
+
+    <select id="getRandomPassengers" resultType="me.likeanowl.aitameetup.model.Guest">
+        SELECT id, first_name, last_name, flight_distance, flight_hours FROM guest ORDER BY RANDOM() LIMIT #{limit}
+    </select>
+</mapper>

@@ -5,3 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/aita_meetup
     username: aita_meetup
     password: aita_meetup
+    hikari:
+      connection-test-query: SELECT 1
+      minimum-idle: 1
+      maximum-pool-size: 5
