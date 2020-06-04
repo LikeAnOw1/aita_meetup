@@ -18,7 +18,7 @@ public class CheckinListenerService extends ListenableService<Guest> {
     private volatile Guest lastCheckedInGuest;
 
     @PostConstruct
-    private void setup() {
+    void setup() {
         this.lastCheckedInGuest = boardingPassService.getLastCheckedInGuest();
     }
 

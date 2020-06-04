@@ -13,7 +13,7 @@ spring:
 aita-meetup:
   random-guest:
     queue-size: 100
-    reload-interval: 15
+    reload-interval: 10
     reload-threshold: 20
 
 images:

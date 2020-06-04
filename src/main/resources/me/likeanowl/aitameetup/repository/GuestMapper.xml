@@ -27,7 +27,7 @@
         SELECT id, first_name, last_name, flight_distance, flight_hours FROM guest WHERE id = #{id}
     </select>
 
-    <select id="getRandomPassengers" resultType="me.likeanowl.aitameetup.model.Guest">
+    <select id="getRandomGuests" resultType="me.likeanowl.aitameetup.model.Guest">
         SELECT id, first_name, last_name, flight_distance, flight_hours FROM guest ORDER BY RANDOM() LIMIT #{limit}
     </select>
 </mapper>

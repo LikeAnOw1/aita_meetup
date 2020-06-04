@@ -8,5 +8,5 @@ import java.util.Collection;
 public interface GuestMapper {
     void insertGuest(@Param("guest") Guest guest);
     Guest findGuest(@Param("id") long guestId);
-    Collection<Guest> getRandomPassengers(@Param("limit") int limit);
+    Collection<Guest> getRandomGuests(@Param("limit") int limit);
 }

@@ -25,27 +25,28 @@ import static me.likeanowl.aitameetup.errors.GuestErrors.GuestDoesNotExist;
 public class BoardingPassService {
     private final BoardingPassMapper boardingPassMapper;
     private final GuestMapper guestMapper;
-    private final Striped<Lock> checkInLocks = Striped.lazyWeakLock(256);
+    private final Striped<Lock> checkInLocks = Striped.lazyWeakLock(128);
 
-    public BoardingPass generateBoardingPass(long passengerId,
+    public BoardingPass generateBoardingPass(long guestId,
                                              String destination,
                                              LocalDateTime arrivalDate) {
-        if (boardingPassMapper.boardingPassExists(passengerId, destination, arrivalDate)) {
-            log.info("Tried to create duplicate boarding pass for passenger: {}, to destination: {}, at: {}",
-                    passengerId, destination, arrivalDate);
-            throw new BoardingPassAlreadyExists(passengerId);
+        if (boardingPassMapper.boardingPassExists(guestId, destination, arrivalDate)) {
+            log.info("Tried to create duplicate boarding pass for guest: {}, to destination: {}, at: {}",
+                    guestId, destination, arrivalDate);
+            throw new BoardingPassAlreadyExists(guestId);
         }
 
-        var passenger = guestMapper.findGuest(passengerId);
-        if (passenger == null) {
-            log.info("Tried to create boarding pass for non existent passenger: {}", passengerId);
-            throw new GuestDoesNotExist(passengerId);
+        var guest = guestMapper.findGuest(guestId);
+        if (guest == null) {
+            log.info("Tried to create boarding pass for non existent guest: {}", guestId);
+            throw new GuestDoesNotExist(guestId);
         }
 
-        var boardingPass = new BoardingPass(passengerId, destination, arrivalDate, generateInvitationCode(passenger));
+        var boardingPass = new BoardingPass(guestId, destination, arrivalDate, generateInvitationCode(guest));
         return boardingPassMapper.insertBoardingPass(boardingPass);
     }
 
+    //TODO need some kind of meetup identifier
     public Guest getLastCheckedInGuest() {
         return boardingPassMapper.getLastCheckedInGuest();
     }

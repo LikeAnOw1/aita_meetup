@@ -29,7 +29,8 @@ public class GuestListenerService extends ListenableService<Guest> {
     private volatile Guest lastPolledGuest;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    public GuestListenerService(GuestMapper guestMapper, ApplicationProperties properties) {
+    public GuestListenerService(GuestMapper guestMapper,
+                                ApplicationProperties properties) {
         this.guestMapper = guestMapper;
         this.properties = properties.getRandomGuest();
     }
@@ -61,7 +62,7 @@ public class GuestListenerService extends ListenableService<Guest> {
             fillRandomGuestQueue();
         }
 
-        log.debug("Polling random guest");
+        log.debug("Polling random guest..");
         var guest = randomGuestQueue.poll();
         lastPolledGuest = guest;
         notifyAllListeners(guest);
@@ -69,7 +70,7 @@ public class GuestListenerService extends ListenableService<Guest> {
 
     private void fillRandomGuestQueue() {
         log.debug("Reloading random guest queue, current reload threshold is {}", properties.getReloadThreshold());
-        var guests = guestMapper.getRandomPassengers(properties.getQueueSize());
+        var guests = guestMapper.getRandomGuests(properties.getQueueSize());
         randomGuestQueue.addAll(guests);
     }
 

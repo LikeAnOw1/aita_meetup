@@ -9,7 +9,6 @@ public class GuestErrors {
         public GuestDoesNotExist(long guestId) {
             super(String.format("Unable to create boarding pass, guest %d does not exist", guestId));
         }
-
     }
     public static class GuestAlreadyCheckedIn extends RuntimeException {
         public GuestAlreadyCheckedIn(long guestId, String invitationCode) {
