@@ -61,5 +61,16 @@
         ORDER BY bp.checked_in_at
         LIMIT 1;
     </select>
+    <select id="getBoardingPass" resultType="me.likeanowl.aitameetup.model.BoardingPass">
+        SELECT id,
+               guest_id,
+               destination,
+               arrival_date,
+               invitation_code,
+               checked_in,
+               checked_in_at
+        FROM boarding_pass
+        WHERE id = #{id};
+    </select>
 
 </mapper>
