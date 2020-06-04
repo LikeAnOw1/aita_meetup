@@ -22,17 +22,23 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+
     implementation 'org.apache.commons:commons-lang3:3.10'
     implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'com.google.zxing:core:3.4.0'
+    implementation 'com.google.zxing:javase:3.4.0'
 
 
     implementation 'org.flywaydb:flyway-core:6.4.3'
     runtimeOnly 'org.postgresql:postgresql:42.2.12'
 
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

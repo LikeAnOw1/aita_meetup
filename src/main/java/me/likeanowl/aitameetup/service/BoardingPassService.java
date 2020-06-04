@@ -18,6 +18,7 @@ import static me.likeanowl.aitameetup.errors.BoardingPassErrors.BoardingPassDoes
 import static me.likeanowl.aitameetup.errors.GuestErrors.GuestAlreadyCheckedIn;
 import static me.likeanowl.aitameetup.errors.GuestErrors.GuestDoesNotExist;
 
+
 @Slf4j
 @Service
 @RequiredArgsConstructor

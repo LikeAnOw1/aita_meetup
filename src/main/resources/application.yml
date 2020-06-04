@@ -9,3 +9,41 @@ spring:
       connection-test-query: SELECT 1
       minimum-idle: 1
       maximum-pool-size: 5
+
+images:
+  boarding-pass:
+    width: 1280
+    height: 464
+    template: classpath:/boarding/template.png
+    text-drawing-suites:
+      - name: mainName
+        x: 100
+        y: 50
+        color: BLACK
+        fontSize: 40
+        font: TimesRoman
+        style: BOLD
+      - name: mainDestination
+        x: 200
+        y: 50
+        fontSize: 30
+        color: BLACK
+        font: TimesRoman
+        style: PLAIN
+      - name: mainDate
+        x: 200
+        y: 100
+        fontSize: 30
+        color: BLACK
+        font: TimesRoman
+        style: PLAIN
+      - name: mainTime
+        x: 200
+        y: 100
+        fontSize: 30
+        color: BLACK
+        font: TimesRoman
+        style: PLAIN
+  barcode:
+    width: 420
+    height: 128
