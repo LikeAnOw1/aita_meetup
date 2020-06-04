@@ -5,11 +5,11 @@
 
     <resultMap id="guest" type="me.likeanowl.aitameetup.model.Guest">
         <constructor>
-            <idArg column="id" javaType="long"/>
+            <idArg column="id" javaType="_long"/>
             <arg column="first_name" javaType="String"/>
             <arg column="last_name" javaType="String"/>
-            <arg column="flight_distance" javaType="int"/>
-            <arg column="flight_hours" javaType="int"/>
+            <arg column="flight_distance" javaType="_int"/>
+            <arg column="flight_hours" javaType="_int"/>
         </constructor>
     </resultMap>
 

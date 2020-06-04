@@ -5,12 +5,12 @@
 
     <resultMap id="boardingPass" type="me.likeanowl.aitameetup.model.BoardingPass">
         <constructor>
-            <idArg column="id" javaType="long"/>
-            <arg column="guest_id" javaType="long"/>
+            <idArg column="id" javaType="_long"/>
+            <arg column="guest_id" javaType="_long"/>
             <arg column="destination" javaType="String"/>
             <arg column="arrival_date" javaType="java.time.LocalDateTime"/>
             <arg column="invitation_code" javaType="String"/>
-            <arg column="checked_in" javaType="boolean"/>
+            <arg column="checked_in" javaType="_boolean"/>
             <arg column="checked_in_at" javaType="java.time.Instant"/>
         </constructor>
     </resultMap>
@@ -41,11 +41,24 @@
         WHERE invitation_code = #{invitation_code};
     </select>
 
-    <select id="checkIn" resultMap="boardingPass">
+    <select id="checkIn" resultMap="me.likeanowl.aitameetup.repository.GuestMapper.guest">
+        WITH checkedIn AS (
         UPDATE boarding_pass
-        SET checked_in    = true,
+        SET checked_in = true,
             checked_in_at = NOW()
-        WHERE id = #{id} RETURNING *;
+        WHERE id = #{id} RETURNING guest_id)
+        SELECT g.*
+        FROM checkedIn cte
+                 LEFT JOIN guest g ON cte.guest_id = g.id
+        WHERE cte.guest_id = id;
+    </select>
+
+    <select id="getLastCheckedInGuest" resultType="me.likeanowl.aitameetup.model.Guest">
+        SELECT (g.*)
+        FROM boarding_pass bp
+                 LEFT JOIN guest g ON bp.guest_id = g.id
+        ORDER BY bp.checked_in_at
+        LIMIT 1;
     </select>
 
 </mapper>

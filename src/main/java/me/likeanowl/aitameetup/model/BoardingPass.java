@@ -16,12 +16,12 @@ public class BoardingPass {
     Instant checkedInAt;
 
     @SuppressWarnings("unused")
-    public BoardingPass(Long id,
-                        Long guestId,
+    public BoardingPass(long id,
+                        long guestId,
                         String destination,
                         LocalDateTime arrivalDate,
                         String invitationCode,
-                        Boolean checkedIn,
+                        boolean checkedIn,
                         Instant checkedInAt) {
         this.id = id;
         this.guestId = guestId;

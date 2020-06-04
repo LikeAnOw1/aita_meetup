@@ -3,22 +3,26 @@ package me.likeanowl.aitameetup.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.likeanowl.aitameetup.controller.requests.CheckInRequest;
-import me.likeanowl.aitameetup.model.BoardingPass;
-import me.likeanowl.aitameetup.service.BoardingPassService;
+import me.likeanowl.aitameetup.model.Guest;
+import me.likeanowl.aitameetup.service.CheckinListenerService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rest/v1")
 public class CheckInController {
-    private final BoardingPassService boardingPassService;
+    private final CheckinListenerService checkinService;
 
     @PostMapping(value = "checkin")
-    public ResponseEntity<BoardingPass> checkIn(@RequestBody CheckInRequest request) {
-        return ResponseEntity.ok(boardingPassService.checkIn(request.getInvitationCode()));
+    public ResponseEntity<Guest> checkIn(@RequestBody CheckInRequest request) {
+        return ResponseEntity.ok(checkinService.checkIn(request.getInvitationCode()));
+    }
+
+    @GetMapping(value = "checkin", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<Flux<Guest>> getLatestCheckInStream() {
+        return ResponseEntity.ok(Flux.create(checkinService::registerListener));
     }
 }

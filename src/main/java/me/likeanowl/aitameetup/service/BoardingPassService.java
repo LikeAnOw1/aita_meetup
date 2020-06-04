@@ -46,7 +46,11 @@ public class BoardingPassService {
         return boardingPassMapper.insertBoardingPass(boardingPass);
     }
 
-    public BoardingPass checkIn(String invitationCode) {
+    public Guest getLastCheckedInGuest() {
+        return boardingPassMapper.getLastCheckedInGuest();
+    }
+
+    public Guest checkIn(String invitationCode) {
         var lock = checkInLocks.get(invitationCode);
         try {
             lock.lock();
@@ -56,7 +60,7 @@ public class BoardingPassService {
         }
     }
 
-    private BoardingPass checkInUnsafe(String invitationCode) {
+    private Guest checkInUnsafe(String invitationCode) {
         var boardingPass = boardingPassMapper.findBoardingPass(invitationCode);
         validateOnCheckIn(invitationCode, boardingPass);
         return boardingPassMapper.checkIn(boardingPass.getId());
@@ -76,8 +80,7 @@ public class BoardingPassService {
     private String generateInvitationCode(Guest guest) {
         var firstName = guest.getFirstName();
         var lastName = guest.getLastName();
-        return String.format("%s/%s       %s",
-                lastName, firstName, randomString()).toUpperCase();
+        return String.format("%s/%s       %s", lastName, firstName, randomString()).toUpperCase();
     }
 
     private String randomString() {
