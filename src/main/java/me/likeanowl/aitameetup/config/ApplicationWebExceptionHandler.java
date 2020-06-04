@@ -1,19 +1,47 @@
 package me.likeanowl.aitameetup.config;
 
-import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
-import org.springframework.web.server.ServerWebExchange;
+import org.springframework.boot.autoconfigure.web.ResourceProperties;
+import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.reactive.error.ErrorAttributes;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.codec.ServerCodecConfigurer;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.Map;
 
-//@Component
-//@Order(-2)
-public class ApplicationWebExceptionHandler implements ErrorWebExceptionHandler {
+@Order(-2)
+@Component
+public class ApplicationWebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
-    @Nonnull
+    public ApplicationWebExceptionHandler(ErrorAttributes errorAttributes,
+                                          ResourceProperties resourceProperties,
+                                          ApplicationContext applicationContext,
+                                          ServerCodecConfigurer serverCodecConfigurer) {
+        super(errorAttributes, resourceProperties, applicationContext);
+        super.setMessageWriters(serverCodecConfigurer.getWriters());
+        super.setMessageReaders(serverCodecConfigurer.getReaders());
+    }
+
     @Override
-    public Mono<Void> handle(@Nullable ServerWebExchange exchange, @Nonnull Throwable ex) {
-        return Mono.empty();
+    protected RouterFunction<ServerResponse> getRoutingFunction(ErrorAttributes errorAttributes) {
+        return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
+    }
+
+    private Mono<ServerResponse> renderErrorResponse(
+            ServerRequest request) {
+
+        Map<String, Object> errorPropertiesMap = getErrorAttributes(request,
+                ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE));
+
+        return ServerResponse.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(errorPropertiesMap));
     }
 }
