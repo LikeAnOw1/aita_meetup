@@ -1,20 +1,20 @@
 package me.likeanowl.aitameetup.service;
 
 import me.likeanowl.aitameetup.model.Guest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doReturn;
 
+@MockBean(name = "flywayInitializer", value = FlywayMigrationInitializer.class)
 @SpringBootTest(classes = {CheckinListenerService.class})
 class CheckinListenerServiceTest {
 

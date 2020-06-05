@@ -41,8 +41,8 @@ public class BoardingPassService {
             log.info("Tried to create boarding pass for non existent guest: {}", guestId);
             throw new GuestDoesNotExist(guestId);
         }
-
-        var boardingPass = new BoardingPass(guestId, destination, arrivalDate, generateInvitationCode(guest));
+        var fullName = String.format("%s %s", guest.getFirstName(), guest.getLastName());
+        var boardingPass = new BoardingPass(guestId, fullName, destination, arrivalDate, generateInvitationCode(guest));
         return boardingPassMapper.insertBoardingPass(boardingPass);
     }
 

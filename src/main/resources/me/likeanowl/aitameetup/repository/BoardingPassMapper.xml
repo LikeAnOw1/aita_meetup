@@ -7,6 +7,7 @@
         <constructor>
             <idArg column="id" javaType="_long"/>
             <arg column="guest_id" javaType="_long"/>
+            <arg column="full_name" javaType="String"/>
             <arg column="destination" javaType="String"/>
             <arg column="arrival_date" javaType="java.time.LocalDateTime"/>
             <arg column="invitation_code" javaType="String"/>
@@ -16,8 +17,9 @@
     </resultMap>
 
     <select id="insertBoardingPass" resultMap="boardingPass">
-        INSERT INTO boarding_pass (guest_id, destination, arrival_date, invitation_code)
+        INSERT INTO boarding_pass (guest_id, full_name, destination, arrival_date, invitation_code)
         VALUES (#{boardingPass.guestId},
+                #{boardingPass.fullName},
                 #{boardingPass.destination},
                 #{boardingPass.arrivalDate},
                 #{boardingPass.invitationCode}) RETURNING *;
@@ -32,6 +34,7 @@
     <select id="findBoardingPass" resultType="me.likeanowl.aitameetup.model.BoardingPass" resultMap="boardingPass">
         SELECT id,
                guest_id,
+               full_name,
                destination,
                arrival_date,
                invitation_code,
@@ -64,6 +67,7 @@
     <select id="getBoardingPass" resultType="me.likeanowl.aitameetup.model.BoardingPass">
         SELECT id,
                guest_id,
+               full_name,
                destination,
                arrival_date,
                invitation_code,

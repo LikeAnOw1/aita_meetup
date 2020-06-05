@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS boarding_pass
 (
     id              BIGSERIAL PRIMARY KEY NOT NULL,
     guest_id        BIGINT                NOT NULL REFERENCES guest (id) ON DELETE CASCADE,
+    full_name       VARCHAR(101)          NOT NULL,
     destination     VARCHAR(300)          NOT NULL,
     arrival_date    TIMESTAMP             NOT NULL,
     invitation_code VARCHAR(256)          NOT NULL,

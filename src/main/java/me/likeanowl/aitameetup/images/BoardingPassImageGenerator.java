@@ -1,7 +1,10 @@
 package me.likeanowl.aitameetup.images;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import me.likeanowl.aitameetup.config.ImagesProperties;
+import me.likeanowl.aitameetup.images.suites.DrawingSuiteWithResource;
+import me.likeanowl.aitameetup.model.BoardingPass;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -10,29 +13,38 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Component
 public class BoardingPassImageGenerator {
 
-    private final ImagesProperties.BoardingPass properties;
     private final BufferedImage template;
+    private final DrawingSuiteService suiteService;
 
     @SneakyThrows
-    public BoardingPassImageGenerator(ImagesProperties properties) {
-        this.properties = properties.getBoardingPass();
-        this.template = ImageIO.read(Files.newInputStream(Path.of(this.properties.getTemplate())));
+    public BoardingPassImageGenerator(ImagesProperties properties,
+                                      DrawingSuiteService suiteService) {
+        this.template = ImageIO.read(Files.newInputStream(Path.of(properties.getBoardingPass().getTemplate())));
+        this.suiteService = suiteService;
+    }
+
+    public CompletableFuture<byte[]> buildBoardingPassImage(CompletableFuture<BoardingPass> boardingPass,
+                                                            CompletableFuture<Image> barcodeImage) {
+        var image = new BufferedImage(template.getWidth(), template.getHeight(), template.getType());
+        var graphics = image.createGraphics();
+        setRenderingQuality(graphics);
+        graphics.drawImage(template, 0, 0, null);
+        return boardingPass
+                .thenCombine(barcodeImage, suiteService::buildDrawingSuites)
+                .thenApply(suites -> drawImage(image, graphics, suites));
     }
 
     @SneakyThrows
-    public byte[] buildBoardingPassImage() {
-        var image = new BufferedImage(template.getWidth(), template.getHeight(), template.getType());
-        var graphics = image.createGraphics();
+    private byte[] drawImage(BufferedImage image, Graphics2D graphics, List<DrawingSuiteWithResource<?>> suites) {
         try {
-            setRenderingQuality(graphics);
-            graphics.drawImage(template, 0, 0, null);
-            graphics.setPaint(Color.BLACK);
-            graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
-            graphics.drawString("Test string", 100, 50);
+            suites.forEach(suite -> suite.draw(graphics));
             var output = new ByteArrayOutputStream();
             ImageIO.write(image, "png", output);
             return output.toByteArray();

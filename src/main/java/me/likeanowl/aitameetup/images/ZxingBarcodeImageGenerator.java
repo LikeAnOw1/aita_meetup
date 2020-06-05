@@ -32,13 +32,6 @@ public class ZxingBarcodeImageGenerator implements BarcodeImageGenerator {
         var image = MatrixToImageWriter.toBufferedImage(encoded);
         var source = new FilteredImageSource(image.getSource(), whiteBackgroundFilter);
         return Toolkit.getDefaultToolkit().createImage(source);
-
-//        var result = new BufferedImage(img.getWidth(null), img.getHeight(null),
-//                BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D bGr = result.createGraphics();
-//        bGr.drawImage(img, 0, 0, null);
-//        bGr.dispose();
-//        return result;
     }
 
 }

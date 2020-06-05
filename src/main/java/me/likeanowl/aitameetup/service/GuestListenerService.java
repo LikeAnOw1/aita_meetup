@@ -6,6 +6,7 @@ import me.likeanowl.aitameetup.config.ApplicationProperties;
 import me.likeanowl.aitameetup.model.Guest;
 import me.likeanowl.aitameetup.repository.GuestMapper;
 import me.likeanowl.aitameetup.utils.ExecutorUtils;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@DependsOn("flywayInitializer")
 public class GuestListenerService extends ListenableService<Guest> {
     public static final String SERVICE_NAME = "Guests";
 

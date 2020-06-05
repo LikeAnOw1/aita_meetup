@@ -34,9 +34,9 @@ class BoardingPassServiceTest {
     private final String destination = "Moscow";
     private final LocalDateTime arrivalDate = LocalDateTime.of(2020, 6, 10, 19, 0);
     private final String invitationCode = "TEST/TEST       TESTCODE";
-    private final BoardingPass notCheckedIn = new BoardingPass(1, guestId, destination,
+    private final BoardingPass notCheckedIn = new BoardingPass(1, guestId, "firstname lastname", destination,
             arrivalDate, invitationCode, false, null);
-    private final BoardingPass checkedIn = new BoardingPass(1, guestId, destination,
+    private final BoardingPass checkedIn = new BoardingPass(1, guestId, "firstname lastname", destination,
             arrivalDate, invitationCode, true, Instant.now());
     private final Guest guest = new Guest(guestId, "firstname", "lastname",
             1000, 10);

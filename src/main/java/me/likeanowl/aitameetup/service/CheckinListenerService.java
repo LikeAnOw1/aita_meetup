@@ -3,6 +3,7 @@ package me.likeanowl.aitameetup.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.likeanowl.aitameetup.model.Guest;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -10,6 +11,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@DependsOn("flywayInitializer")
 public class CheckinListenerService extends ListenableService<Guest> {
 
     private static final String SERVICE_NAME = "checkIn";

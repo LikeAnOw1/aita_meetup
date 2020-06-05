@@ -2,6 +2,8 @@ package me.likeanowl.aitameetup;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
@@ -10,7 +12,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
-
+@MockBean(name = "flywayInitializer", value = FlywayMigrationInitializer.class)
 @ContextConfiguration(initializers = BaseIntegrationTest.TestContextInitializer.class)
 public abstract class BaseIntegrationTest {
     private final static Logger log = LoggerFactory.getLogger(BaseIntegrationTest.class);

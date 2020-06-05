@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class BoardingPass {
     long id;
     long guestId;
+    String fullName;
     String destination;
     LocalDateTime arrivalDate;
     String invitationCode;
@@ -18,6 +19,7 @@ public class BoardingPass {
     @SuppressWarnings("unused")
     public BoardingPass(long id,
                         long guestId,
+                        String fullName,
                         String destination,
                         LocalDateTime arrivalDate,
                         String invitationCode,
@@ -25,6 +27,7 @@ public class BoardingPass {
                         Instant checkedInAt) {
         this.id = id;
         this.guestId = guestId;
+        this.fullName = fullName;
         this.destination = destination;
         this.arrivalDate = arrivalDate;
         this.invitationCode = invitationCode;
@@ -33,11 +36,13 @@ public class BoardingPass {
     }
 
     public BoardingPass(long guestId,
+                        String fullName,
                         String destination,
                         LocalDateTime arrivalDate,
                         String invitationCode) {
         this.id = 0;
         this.guestId = guestId;
+        this.fullName = fullName;
         this.destination = destination;
         this.arrivalDate = arrivalDate;
         this.invitationCode = invitationCode;
