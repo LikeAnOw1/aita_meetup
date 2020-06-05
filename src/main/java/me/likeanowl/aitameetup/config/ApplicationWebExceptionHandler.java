@@ -40,7 +40,7 @@ public class ApplicationWebExceptionHandler extends AbstractErrorWebExceptionHan
         Map<String, Object> errorPropertiesMap = getErrorAttributes(request,
                 ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE));
 
-        return ServerResponse.status(HttpStatus.BAD_REQUEST)
+        return ServerResponse.status((int) errorPropertiesMap.get("status"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(errorPropertiesMap));
     }

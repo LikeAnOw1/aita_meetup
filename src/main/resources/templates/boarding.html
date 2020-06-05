@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>App In The Air Meetup</title>
+</head>
+<body>
+<div id="content">
+    <h1>NOW BOARDING</h1>
+    <h3>Name</h3>
+    <span id="name"></span>
+    <h3>Distance</h3>
+    <span id="distance"></span>
+    <h3>Flight Time</h3>
+    <span id="flight-time"></span>
+    <p id="error"></p>
+</div>
+<script type="application/javascript" th:src="@{/static/boarding.js}"></script>
+<script type="application/javascript" th:src="@{/static/common.js}"></script>
+
+</body>
+</html>
