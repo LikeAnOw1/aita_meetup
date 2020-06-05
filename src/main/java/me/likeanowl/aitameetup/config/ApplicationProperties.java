@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("aita-meetup")
 public class ApplicationProperties {
     private RandomGuest randomGuest;
+    private int batchSize;
 
     @Data
     public static class RandomGuest {

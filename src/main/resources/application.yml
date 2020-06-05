@@ -15,6 +15,7 @@ springdoc:
     path: /
 
 aita-meetup:
+  batch-size: 500
   random-guest:
     queue-size: 100
     reload-interval: 10

@@ -1,5 +1,6 @@
 package me.likeanowl.aitameetup.service;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import me.likeanowl.aitameetup.config.ApplicationProperties;
 import me.likeanowl.aitameetup.model.Guest;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
@@ -25,6 +27,7 @@ public class GuestListenerService extends ListenableService<Guest> {
 
     private final GuestMapper guestMapper;
     private final ApplicationProperties.RandomGuest properties;
+    private final int batchSize;
 
     private volatile Guest lastPolledGuest;
 
@@ -33,6 +36,7 @@ public class GuestListenerService extends ListenableService<Guest> {
                                 ApplicationProperties properties) {
         this.guestMapper = guestMapper;
         this.properties = properties.getRandomGuest();
+        this.batchSize = properties.getBatchSize();
     }
 
     @PostConstruct
@@ -41,6 +45,10 @@ public class GuestListenerService extends ListenableService<Guest> {
         lastPolledGuest = randomGuestQueue.poll();
         guestWorker.scheduleAtFixedRate(this::sendRandomGuest,
                 0L, properties.getReloadInterval(), TimeUnit.SECONDS);
+    }
+
+    public void insertGuests(List<Guest> guests) {
+        Lists.partition(guests, batchSize).forEach(guestMapper::insertGuests);
     }
 
     @Override
@@ -69,7 +77,8 @@ public class GuestListenerService extends ListenableService<Guest> {
     }
 
     private void fillRandomGuestQueue() {
-        log.debug("Reloading random guest queue, current reload threshold is {}", properties.getReloadThreshold());
+        log.debug("Reloading random guest queue, current reload threshold is {}",
+                properties.getReloadThreshold());
         var guests = guestMapper.getRandomGuests(properties.getQueueSize());
         randomGuestQueue.addAll(guests);
     }

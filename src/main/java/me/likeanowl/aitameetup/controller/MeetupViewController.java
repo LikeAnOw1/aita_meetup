@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.reactive.result.view.Rendering;
 
 @Controller
-public class MeetupViewsController {
-
+public class MeetupViewController {
 
     @GetMapping("/map")
     public Rendering map() {

@@ -13,21 +13,28 @@
         </constructor>
     </resultMap>
 
-    <insert id="insertGuest">
-        INSERT INTO guest (id, first_name, last_name, flight_distance, flight_hours)
-        VALUES (#{guest.id}, #{guest.firstName}, #{guest.lastName}, #{guest.flightDistance},
-                #{guest.flightHours})
-        ON CONFLICT DO UPDATE SET (first_name = EXCLUDED.first_name,
-            last_name = EXCLUDED.last_name,
-            flight_distance = EXCLUDED.flight_distance,
-            flight_hours = EXCLUDED.flight_hours);
+    <insert id="insertGuests">
+        INSERT INTO guest (id, first_name, last_name, flight_distance, flight_hours) VALUES
+        <foreach collection="guests" item="item" index="index" open="(" separator="),(" close=")">
+            #{item.id}, #{item.firstName}, #{item.lastName}, #{item.flightDistance}, #{item.flightHours}
+        </foreach>
+        ON CONFLICT (id) DO UPDATE SET first_name = EXCLUDED.first_name,
+        last_name = EXCLUDED.last_name,
+        flight_distance = EXCLUDED.flight_distance,
+        flight_hours = EXCLUDED.flight_hours;
+
     </insert>
 
     <select id="findGuest" resultType="me.likeanowl.aitameetup.model.Guest">
-        SELECT id, first_name, last_name, flight_distance, flight_hours FROM guest WHERE id = #{id}
+        SELECT id, first_name, last_name, flight_distance, flight_hours
+        FROM guest
+        WHERE id = #{id}
     </select>
 
     <select id="getRandomGuests" resultType="me.likeanowl.aitameetup.model.Guest">
-        SELECT id, first_name, last_name, flight_distance, flight_hours FROM guest ORDER BY RANDOM() LIMIT #{limit}
+        SELECT id, first_name, last_name, flight_distance, flight_hours
+        FROM guest
+        ORDER BY RANDOM()
+        LIMIT #{limit}
     </select>
 </mapper>
