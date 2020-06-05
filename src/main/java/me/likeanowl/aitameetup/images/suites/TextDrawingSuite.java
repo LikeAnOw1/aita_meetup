@@ -1,6 +1,7 @@
 package me.likeanowl.aitameetup.images.suites;
 
 import lombok.Data;
+import org.apache.commons.text.WordUtils;
 
 import java.awt.*;
 
@@ -11,12 +12,22 @@ public class TextDrawingSuite implements DrawingSuite<String> {
     private int y;
     private Color color;
     private Font font;
+    private int wrapLength;
 
     @Override
     public void draw(Graphics2D graphics, String resource) {
         graphics.setPaint(color.toAwtColor());
         graphics.setFont(font.toAwtFont());
-        graphics.drawString(resource, x, y);
+        var wrapped = wrapLength > 0
+                ? WordUtils.wrap(resource, wrapLength, "\n", true)
+                : resource;
+
+        var tokens = wrapped.split("\n");
+        var localY = y;
+        for (var token : tokens) {
+            graphics.drawString(token, x, localY);
+            localY += font.fontSize + 2;
+        }
     }
 
     @Data

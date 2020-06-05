@@ -22,7 +22,6 @@ public class BoardingPassImageController {
     public CompletableFuture<byte[]> generateBoardingPass(@Valid @RequestBody GenerateBoardingPassRequest request) {
         return boardingPassService.generateBoardingPassImage(
                         request.getGuestId(), request.getDestination(), request.getArrival());
-
     }
 }
 

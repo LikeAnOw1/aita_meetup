@@ -25,7 +25,7 @@ images:
   boarding-pass:
     width: 1280
     height: 464
-    template: classpath:/boarding/template.png
+    template: /boarding/template.png
     barcode-drawing-suites:
       - name: mainBarcode
         x: 500
@@ -45,6 +45,7 @@ images:
           name: TimesRoman
           font-size: 37
           style: 1
+        wrap-length: 20
       - name: mainDestination
         x: 47
         y: 340
@@ -56,6 +57,7 @@ images:
           name: TimesRoman
           font-size: 25
           style: 1
+        wrap-length: 18
       - name: mainDate
         x: 400
         y: 340
@@ -89,6 +91,7 @@ images:
           name: TimesRoman
           font-size: 23
           style: 1
+        wrap-length: 20
       - name: ticketDestination
         x: 975
         y: 190
@@ -100,6 +103,7 @@ images:
           name: TimesRoman
           font-size: 23
           style: 1
+        wrap-length: 18
       - name: ticketDate
         x: 975
         y: 315

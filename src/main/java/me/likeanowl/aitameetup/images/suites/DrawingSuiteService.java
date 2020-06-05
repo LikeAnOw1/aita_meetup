@@ -1,7 +1,6 @@
-package me.likeanowl.aitameetup.images;
+package me.likeanowl.aitameetup.images.suites;
 
 import me.likeanowl.aitameetup.config.ImagesProperties;
-import me.likeanowl.aitameetup.images.suites.DrawingSuiteWithResource;
 import me.likeanowl.aitameetup.model.BoardingPass;
 import org.springframework.stereotype.Component;
 

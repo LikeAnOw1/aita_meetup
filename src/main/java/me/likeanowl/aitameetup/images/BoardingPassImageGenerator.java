@@ -3,6 +3,7 @@ package me.likeanowl.aitameetup.images;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import me.likeanowl.aitameetup.config.ImagesProperties;
+import me.likeanowl.aitameetup.images.suites.DrawingSuiteService;
 import me.likeanowl.aitameetup.images.suites.DrawingSuiteWithResource;
 import me.likeanowl.aitameetup.model.BoardingPass;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,7 +25,7 @@ public class BoardingPassImageGenerator {
     @SneakyThrows
     public BoardingPassImageGenerator(ImagesProperties properties,
                                       DrawingSuiteService suiteService) {
-        this.template = ImageIO.read(Files.newInputStream(Path.of(properties.getBoardingPass().getTemplate())));
+        this.template = ImageIO.read(getClass().getResourceAsStream(properties.getBoardingPass().getTemplate()));
         this.suiteService = suiteService;
     }
 

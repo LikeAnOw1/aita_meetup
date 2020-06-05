@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: postres
+    image: postgres:alpine
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB=aita_meetup
+      POSTGRES_USER=aita_meetup
+      POSTGRES_PASSWORD=aita_meetup
+  aita-meetup:
+    container_name: aita-meetup
+    image: aita-meetup:latest
+    restart: always
+    depends_on:
+      - 'postgres'
+    ports:
+      - 8080:8080

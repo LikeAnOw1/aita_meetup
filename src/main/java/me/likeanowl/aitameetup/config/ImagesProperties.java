@@ -18,7 +18,7 @@ public class ImagesProperties {
     public static class BoardingPass {
         private int width;
         private int height;
-        private URI template;
+        private String template;
         private List<TextDrawingSuite> textDrawingSuites;
         private List<ImageDrawingSuite> barcodeDrawingSuites;
     }
