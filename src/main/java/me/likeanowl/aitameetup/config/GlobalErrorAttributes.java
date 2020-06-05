@@ -4,6 +4,7 @@ import me.likeanowl.aitameetup.errors.NetworkException;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.function.server.ServerRequest;
 
 import java.util.Map;
@@ -21,6 +22,15 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
             var ex = (NetworkException) getError(request);
             attributes.put("status", ex.getStatus().value());
             attributes.put("error", ex.getStatus().getReasonPhrase());
+        }
+
+        if (error instanceof WebExchangeBindException) {
+            var ex = (WebExchangeBindException) error;
+            var bindingResult = ex.getBindingResult();
+            var fieldError = bindingResult.getFieldError();
+            if (fieldError != null) {
+                attributes.put("message", fieldError.getDefaultMessage());
+            }
         }
 
         return attributes;

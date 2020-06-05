@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rest/v1")
@@ -16,7 +18,7 @@ public class BoardingPassImageController {
 
     @PostMapping(value = "boarding", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public byte[] generateBoardingPass(@RequestBody GenerateBoardingPassRequest request) {
+    public byte[] generateBoardingPass(@Valid @RequestBody GenerateBoardingPassRequest request) {
         return boardingPassService.generateBoardingPassImage(
                         request.getGuestId(), request.getDestination(), request.getArrival());
 

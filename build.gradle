@@ -32,7 +32,8 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'com.google.zxing:core:3.4.0'
     implementation 'com.google.zxing:javase:3.4.0'
-
+    implementation 'org.hibernate:hibernate-validator:6.1.5.Final'
+    implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.4.0'
 
     implementation 'org.flywaydb:flyway-core:6.4.3'
     runtimeOnly 'org.postgresql:postgresql:42.2.12'
@@ -41,6 +42,7 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.hibernate:hibernate-validator-annotation-processor:6.1.5.Final'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

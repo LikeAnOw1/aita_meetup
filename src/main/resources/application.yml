@@ -10,6 +10,10 @@ spring:
       minimum-idle: 1
       maximum-pool-size: 5
 
+springdoc:
+  swagger-ui:
+    path: /
+
 aita-meetup:
   random-guest:
     queue-size: 100

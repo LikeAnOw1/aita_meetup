@@ -58,19 +58,11 @@ class CheckinListenerServiceTest {
         var guest = checkinListenerService.checkIn("invitation");
         assertEquals(first, guest);
 
-        var thirdListener = Flux.create(checkinListenerService::registerListener);
-
-        var thirdVerifier = StepVerifier.create(thirdListener)
-                .assertNext(g -> assertEquals(first, g))
-                .assertNext(g -> assertEquals(second, g))
-                .thenCancel()
-                .verifyLater();
 
         guest = checkinListenerService.checkIn("invitation2");
         assertEquals(second, guest);
 
         firstVerifier.verify();
         secondVerifier.verify();
-        thirdVerifier.verify();
     }
 }

@@ -46,7 +46,8 @@ class BoardingPassServiceTest {
     void generateBoardingPass_duplicate() {
         doReturn(true).when(boardingPassMapper).boardingPassExists(anyLong(), anyString(), any(LocalDateTime.class));
         assertThrows(BoardingPassErrors.BoardingPassAlreadyExists.class,
-                () -> boardingPassService.generateBoardingPass(guestId, destination, arrivalDate));
+                () -> boardingPassService.generateBoardingPass(guestId, destination, arrivalDate),
+                "Shouldn't generate boarding pass for same guest, destination and arrivalDate");
     }
 
     @Test
@@ -54,7 +55,8 @@ class BoardingPassServiceTest {
         doReturn(false).when(boardingPassMapper).boardingPassExists(anyLong(), anyString(), any(LocalDateTime.class));
         doReturn(null).when(guestMapper).findGuest(anyLong());
         assertThrows(GuestErrors.GuestDoesNotExist.class,
-                () -> boardingPassService.generateBoardingPass(guestId, destination, arrivalDate));
+                () -> boardingPassService.generateBoardingPass(guestId, destination, arrivalDate),
+                "Shouldn't be able to create boarding pass for non existent guest");
     }
 
     @Test
@@ -67,13 +69,18 @@ class BoardingPassServiceTest {
 
         var boardingPass = boardingPassService.generateBoardingPass(guestId, destination, arrivalDate);
         assertAll(
-                () -> assertNotNull(boardingPass),
-                () -> assertEquals(guestId, boardingPass.getGuestId()),
-                () -> assertEquals(destination, boardingPass.getDestination()),
-                () -> assertEquals(arrivalDate, boardingPass.getArrivalDate()),
-                () -> assertTrue(boardingPass.getInvitationCode().startsWith("LASTNAME/FIRSTNAME       ")),
-                () -> assertFalse(boardingPass.isCheckedIn()),
-                () -> assertNull(boardingPass.getCheckedInAt())
+                () -> assertNotNull(boardingPass, "Valid generated boarding pass should not be null"),
+                () -> assertEquals(guestId, boardingPass.getGuestId(), "Boarding pass has incorrect guestId"),
+                () -> assertEquals(destination, boardingPass.getDestination(),
+                        "Boarding pass has incorrect destination"),
+                () -> assertEquals(arrivalDate, boardingPass.getArrivalDate(),
+                        "Boarding pass has incorrect arrivalDate"),
+                () -> assertTrue(boardingPass.getInvitationCode().startsWith("LASTNAME/FIRSTNAME       "),
+                        "Boarding pass invitation has incorrect format"),
+                () -> assertFalse(boardingPass.isCheckedIn(),
+                        "Generated boarding pass should not be checked in"),
+                () -> assertNull(boardingPass.getCheckedInAt(),
+                        "Generated boarding pass should not be checked in date")
         );
     }
 
@@ -81,14 +88,15 @@ class BoardingPassServiceTest {
     void checkIn_noBoardingPass() {
         doReturn(null).when(boardingPassMapper).findBoardingPass(anyString());
         assertThrows(BoardingPassErrors.BoardingPassDoesNotExist.class,
-                () -> boardingPassService.checkIn(invitationCode));
+                () -> boardingPassService.checkIn(invitationCode),
+                "Cannot checkin on non existent boarding pass");
     }
 
     @Test
     void checkIn_checkedIn() {
         doReturn(checkedIn).when(boardingPassMapper).findBoardingPass(anyString());
         assertThrows(GuestErrors.GuestAlreadyCheckedIn.class,
-                () -> boardingPassService.checkIn(invitationCode));
+                () -> boardingPassService.checkIn(invitationCode), "Cannot checkin more than once");
     }
 
     @Test
@@ -96,6 +104,6 @@ class BoardingPassServiceTest {
         doReturn(notCheckedIn).when(boardingPassMapper).findBoardingPass(invitationCode);
         doReturn(guest).when(boardingPassMapper).checkIn(notCheckedIn.getId());
         var checkIn = boardingPassService.checkIn(invitationCode);
-        assertEquals(guest, checkIn);
+        assertEquals(guest, checkIn, "Incorrect guest after checkin");
     }
 }

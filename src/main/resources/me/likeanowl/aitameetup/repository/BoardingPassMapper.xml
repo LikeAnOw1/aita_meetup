@@ -22,7 +22,7 @@
                 #{boardingPass.arrivalDate},
                 #{boardingPass.invitationCode}) RETURNING *;
     </select>
-    <select id="boardingPassExists" resultType="java.lang.Boolean">
+    <select id="boardingPassExists" resultType="boolean">
         SELECT EXISTS(SELECT 1
                       from boarding_pass
                       WHERE (guest_id = #{guest_id} AND

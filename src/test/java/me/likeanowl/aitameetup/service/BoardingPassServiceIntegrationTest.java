@@ -29,24 +29,28 @@ class BoardingPassServiceIntegrationTest extends BaseIntegrationTest {
     @Test
     void testBoardingPassGenerationAndCheckIn() {
         var boardingPass = boardingPassService.generateBoardingPass(guestId, destination, arrivalDate);
-        assertNotNull(boardingPass);
+        assertNotNull(boardingPass, "Boarding pass after generation shouldn't be null");
 
         assertThrows(BoardingPassErrors.BoardingPassAlreadyExists.class,
-                () -> boardingPassService.generateBoardingPass(guestId, destination, arrivalDate));
+                () -> boardingPassService.generateBoardingPass(guestId, destination, arrivalDate),
+                "Shouldn't generate boarding pass for same guest, destination and arrivalDate");
         assertThrows(GuestErrors.GuestDoesNotExist.class,
-                () -> boardingPassService.generateBoardingPass(-1, destination, arrivalDate));
+                () -> boardingPassService.generateBoardingPass(-1, destination, arrivalDate),
+                "Shouldn't generate boarding pass for guest that not exists");
         assertFalse(boardingPass.isCheckedIn());
 
         var guest = boardingPassService.checkIn(boardingPass.getInvitationCode());
-        assertNotNull(guest);
+        assertNotNull(guest, "Guest after checkin should not be null");
 
         var savedBoardingPass = boardingPassMapper.getBoardingPass(boardingPass.getId());
-        assertNotNull(savedBoardingPass);
-        assertTrue(savedBoardingPass.isCheckedIn());
+        assertNotNull(savedBoardingPass, "Boarding pass should be present in db");
+        assertTrue(savedBoardingPass.isCheckedIn(), "Boarding pass wasn't checked in after checkin");
 
         assertThrows(BoardingPassErrors.BoardingPassDoesNotExist.class,
-                () -> boardingPassService.checkIn("this code is not valid"));
+                () -> boardingPassService.checkIn("this code is not valid"),
+                "Should not be able to check in with non existent invitation code");
         assertThrows(GuestErrors.GuestAlreadyCheckedIn.class,
-                () -> boardingPassService.checkIn(boardingPass.getInvitationCode()));
+                () -> boardingPassService.checkIn(boardingPass.getInvitationCode()),
+                "Guest should not be able to checkin more than once");
     }
 }

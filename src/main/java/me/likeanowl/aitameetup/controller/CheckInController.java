@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rest/v1")
@@ -18,7 +20,7 @@ public class CheckInController {
 
     @PostMapping(value = "checkin")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Guest checkIn(@RequestBody CheckInRequest request) {
+    public Guest checkIn(@Valid @RequestBody CheckInRequest request) {
         return checkinService.checkIn(request.getInvitationCode());
     }
 
