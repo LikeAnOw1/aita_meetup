@@ -4,7 +4,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Writer;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.pdf417.PDF417Writer;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import me.likeanowl.aitameetup.config.ImagesProperties;
 import org.springframework.stereotype.Component;

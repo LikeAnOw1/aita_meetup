@@ -91,7 +91,7 @@ images:
           name: TimesRoman
           font-size: 23
           style: 1
-        wrap-length: 20
+        wrap-length: 15
       - name: ticketDestination
         x: 975
         y: 190
