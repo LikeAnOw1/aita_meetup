@@ -5,7 +5,6 @@ import me.likeanowl.aitameetup.images.suites.ImageDrawingSuite;
 import me.likeanowl.aitameetup.images.suites.TextDrawingSuite;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.net.URI;
 import java.util.List;
 
 @Data

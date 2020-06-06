@@ -2,7 +2,8 @@ package me.likeanowl.aitameetup.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.likeanowl.aitameetup.controller.requests.AddGuestsRequest;
-import me.likeanowl.aitameetup.model.Guest;
+import me.likeanowl.aitameetup.controller.responses.DTOMapper;
+import me.likeanowl.aitameetup.controller.responses.GuestDTO;
 import me.likeanowl.aitameetup.service.GuestListenerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,15 +22,15 @@ public class GuestController {
 
     @GetMapping(value = "/guest", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Flux<Guest> getRandomGuestStream() {
-        return Flux.create(guestService::registerListener);
+    public Flux<GuestDTO> getRandomGuestStream() {
+        return Flux.create(guestService::registerListener).map(DTOMapper::fromGuest);
     }
 
     @PostMapping(value = "/guest")
     @ResponseStatus(HttpStatus.CREATED)
     public String addGuests(@Valid @RequestBody AddGuestsRequest request) {
         guestService.insertGuests(request.getGuests().stream()
-                .map(AddGuestsRequest.GuestDTO::toGuest).collect(Collectors.toList()));
+                .map(DTOMapper::toGuest).collect(Collectors.toList()));
         return String.format("Added %d guests", request.getGuests().size());
     }
 }
